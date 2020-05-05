@@ -1,0 +1,29 @@
+name: Build and push image to private repository
+env:
+  DOCKER_REGISTRY: "dimeder13/site"
+  IMAGE_TAG: ${{ github.run_id }}
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout 
+      uses: actions/checkout@v2
+
+    - name: Login to the DockerHub
+      id: login-registry
+      run: |
+         docker login --username ${{  docker_user }} --password ${{ secrets.docker_password }}
+
+    - name: Build, tag, and push image to DockerHub
+      id: build-image
+      run: |
+        docker build -t ${{ env.DOCKER_REGISTRY }}:${{ env.IMAGE_TAG }} ./docker/
+        docker push ${{ env.DOCKER_REGISTRY }}:${{ env.IMAGE_TAG }}
