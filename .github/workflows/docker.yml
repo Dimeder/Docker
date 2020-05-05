@@ -20,7 +20,7 @@ jobs:
     - name: Login to the DockerHub
       id: login-registry
       run: |
-         docker login --username ${{  docker_user }} --password ${{ secrets.docker_password }}
+         docker login --username ${{  secrets.docker_user }} --password ${{ secrets.docker_password }}
 
     - name: Build, tag, and push image to DockerHub
       id: build-image
