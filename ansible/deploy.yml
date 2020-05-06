@@ -1,0 +1,21 @@
+---
+
+- name: Install docker
+  hosts: dev
+  become: true
+  vars:
+    container_name: "site"
+    container_image: "dimeder13/site"
+    image_tag: "96547603"
+
+  tasks:
+  - name: Pull and run docker container
+    docker_container:
+      name: "{{ container_name }}"
+      image: "{{ container_image }}:{{ image_tag }}"
+      state: started
+      ports:
+        - "80:80"
+
+     
+      

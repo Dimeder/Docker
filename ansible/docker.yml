@@ -1,0 +1,38 @@
+---
+
+- name: Install docker
+  hosts: dev
+  become: true
+
+  tasks:
+  - name: Update the apt package
+    apt:
+      update_cache: yes
+      cache_valid_time: 5
+
+  - name: Install packages 
+    apt: 
+      pkg:  
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - python-pip
+      state: latest
+
+  - name: Add Docker’s official GPG key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+
+  - name: Add docker repository
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable"
+
+  - name: Install the latest version of Docker CE
+    apt:
+      name:
+      - docker-ce
+  - pip:
+      name: docker
+
+
